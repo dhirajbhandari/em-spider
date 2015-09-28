@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+LIB_DIR = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(LIB_DIR)
+
+require 'spider'
+Spider.run(*ARGV)
+
