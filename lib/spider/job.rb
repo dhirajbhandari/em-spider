@@ -7,7 +7,7 @@ module Spider
   class Job
 
     attr_reader :uri, :handler
-    
+
     def initialize(uri, on_complete)
       @uri = uri
       @handler = on_complete
@@ -16,7 +16,7 @@ module Spider
     def run
       logger.info "job#run(uri: #{uri})"
       http = EventMachine::HttpRequest.new(uri).get
-      
+
       #on error
       http.errback do
         logger.error 'Uh oh'

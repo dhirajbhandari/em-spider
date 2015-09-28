@@ -11,10 +11,10 @@ module Spider
 
     def complete(status, result=nil)
       @results << result
-     if @results.size == expected_count
-       calculate_total
-       EM.stop
-    end
+      if @results.size == expected_count
+        calculate_total
+        EM.stop
+      end
     end
 
     def calculate_total
