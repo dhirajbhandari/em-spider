@@ -3,6 +3,8 @@ require 'em-http'
 require 'nokogiri'
 require 'open-uri'
 
+require 'spider/http_client'
+
 module Spider
   class Job
 
@@ -15,22 +17,19 @@ module Spider
 
     def run
       logger.info "job#run(uri: #{uri})"
-      http = EventMachine::HttpRequest.new(uri).get
-
-      #on error
-      http.errback do
-        logger.error 'Uh oh'
-        handler.complete(false)
+      http_client.get(uri) do |response_body|
+        on_success(response_body)
       end
+    end
 
-      # on success
-      http.callback do
-        #p http.response_header.status
-        #p http.response_header
-        res = http.response
-        img_links = parse(res)
-        handler.complete(true, img_links)
-      end
+    def on_success(response_body)
+      img_links = parse(response_body)
+      handler.complete(true, img_links)
+    end
+
+    def http_client
+      HttpClient.new
+      #EmHttpClient.new
     end
 
     def parse(response)
